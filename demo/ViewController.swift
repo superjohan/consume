@@ -217,6 +217,10 @@ class ViewController: UIViewController {
                         pattern3position = 0
                     }
                 }
+                
+                if tick == 8 {
+                    perform(#selector(clapEvent), with: nil, afterDelay: tickPosition)
+                }
             }
         }
     }
@@ -242,6 +246,14 @@ class ViewController: UIViewController {
         
         UIView.animate(withDuration: 0.1, animations: {
             self.testView3.alpha = 0
+        })
+    }
+    
+    @objc private func clapEvent() {
+        self.view.backgroundColor = .white
+        
+        UIView.animate(withDuration: 0.4, animations: {
+            self.view.backgroundColor = .black
         })
     }
 }
