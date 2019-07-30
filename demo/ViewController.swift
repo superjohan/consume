@@ -148,7 +148,7 @@ class ViewController: UIViewController {
         
         let pattern1 = [1, 0, 0, 0, 0]
         let pattern1resets = [8, 28, 29, 45, 52, 58, 62, 69, 80]
-        let pattern1off = [41, 42, 43, 44, 78, 81]
+        let pattern1off = [41, 42, 43, 44, 78, 79]
         
         let pattern2 = [0, 1, 0, 0, 1]
         let pattern2resets = [16, 20, 35, 45, 55, 56, 60, 65, 66, 80]
