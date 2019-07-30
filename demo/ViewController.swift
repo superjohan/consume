@@ -258,10 +258,5 @@ class ViewController: UIViewController {
     }
     
     @objc private func clapEvent() {
-        self.view.backgroundColor = .white
-        
-        UIView.animate(withDuration: 0.4, animations: {
-            self.view.backgroundColor = .black
-        })
     }
 }
