@@ -14,9 +14,9 @@ class ViewController: UIViewController {
     let autostart = true
     
     let audioPlayer: AVAudioPlayer
-    let startButton: UIButton
-    let qtFoolingBgView: UIView = UIView.init(frame: CGRect.zero)
-
+    let startButton = UIButton(type: UIButton.ButtonType.custom)
+    let qtFoolingBgView = UIView()
+    
     // MARK: - UIViewController
     
     init() {
@@ -39,7 +39,6 @@ class ViewController: UIViewController {
                 "presented at some party 2018\n" +
                 "\n" +
         "tap anywhere to start"
-        self.startButton = UIButton.init(type: UIButton.ButtonType.custom)
         self.startButton.setTitle(startButtonText, for: UIControl.State.normal)
         self.startButton.titleLabel?.numberOfLines = 0
         self.startButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
