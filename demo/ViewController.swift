@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     
     let audioPlayer: AVAudioPlayer
     let startButton = UIButton(type: UIButton.ButtonType.custom)
+    let contentView = UIView()
     let qtFoolingBgView = UIView()
     
     // MARK: - UIViewController
@@ -55,6 +56,10 @@ class ViewController: UIViewController {
         // barely visible tiny view for fooling Quicktime player. completely black images are ignored by QT
         self.view.addSubview(self.qtFoolingBgView)
         
+        self.contentView.backgroundColor = .white
+        
+        self.view.addSubview(self.contentView)
+        
         if !self.autostart {
             self.view.addSubview(self.startButton)
         }
@@ -88,20 +93,24 @@ class ViewController: UIViewController {
             height: 2
         )
 
-        self.testView1.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        self.testView1.backgroundColor = .red
-        self.testView1.alpha = 0
-        self.view.addSubview(self.testView1)
+        self.contentView.frame = self.view.bounds
 
-        self.testView2.frame = CGRect(x: 100, y: 0, width: 100, height: 100)
-        self.testView2.backgroundColor = .green
+        let length = (self.view.bounds.size.width / 3.0) - 50
+        
+        self.testView2.frame = CGRect(x: (self.view.bounds.size.width / 2.0) - (length / 2.0), y: (self.view.bounds.size.height / 2.0) - (length / 2.0), width: length, height: length)
+        self.testView2.backgroundColor = .black
         self.testView2.alpha = 0
-        self.view.addSubview(self.testView2)
+        self.contentView.addSubview(self.testView2)
 
-        self.testView3.frame = CGRect(x: 200, y: 0, width: 100, height: 100)
-        self.testView3.backgroundColor = .blue
+        self.testView1.frame = CGRect(x: self.testView2.frame.origin.x - length, y: self.testView2.frame.origin.y, width: length, height: length)
+        self.testView1.backgroundColor = .black
+        self.testView1.alpha = 0
+        self.contentView.addSubview(self.testView1)
+        
+        self.testView3.frame = CGRect(x: self.testView2.frame.origin.x + length, y: self.testView2.frame.origin.y, width: length, height: length)
+        self.testView3.backgroundColor = .black
         self.testView3.alpha = 0
-        self.view.addSubview(self.testView3)
+        self.contentView.addSubview(self.testView3)
 
         self.startButton.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
     }
