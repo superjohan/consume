@@ -236,7 +236,7 @@ class ViewController: UIViewController {
     @objc private func pattern1event() {
         self.testView1.alpha = 1
         
-        UIView.animate(withDuration: 0.1, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.testView1.alpha = 0
         })
     }
@@ -244,7 +244,7 @@ class ViewController: UIViewController {
     @objc private func pattern2event() {
         self.testView2.alpha = 1
         
-        UIView.animate(withDuration: 0.1, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.testView2.alpha = 0
         })
     }
@@ -252,7 +252,7 @@ class ViewController: UIViewController {
     @objc private func pattern3event() {
         self.testView3.alpha = 1
         
-        UIView.animate(withDuration: 0.1, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.testView3.alpha = 0
         })
     }
