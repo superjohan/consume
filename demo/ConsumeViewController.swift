@@ -36,6 +36,8 @@ class ConsumeViewController: UIViewController {
     var didReset = false
     var rotateBackground = Bool.random()
     
+    var squares = [0, 0, 0, 1, 2, 3, 0, 0, 0]
+    
     // MARK: - UIViewController
     
     init() {
@@ -134,6 +136,8 @@ class ConsumeViewController: UIViewController {
         self.squareView3.alpha = 0
         self.squaresView.addSubview(self.squareView3)
 
+        positionSquares(animated: false)
+        
         self.startButton.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
     }
     
@@ -378,6 +382,8 @@ class ConsumeViewController: UIViewController {
             self.position += 1
             self.didReset = false
 
+            // background
+            
             if self.rotateBackground {
                 rotateBackgroundViews()
             } else {
@@ -385,6 +391,10 @@ class ConsumeViewController: UIViewController {
             }
             
             self.rotateBackground = !self.rotateBackground
+
+            // squares
+            
+            randomizeSquarePositions()
         }
         
         rotateSquaresView()
@@ -444,6 +454,66 @@ class ConsumeViewController: UIViewController {
         self.squaresView.layer.add(animationY, forKey: "rotationY")
     }
 
+    private func randomizeSquarePositions() {
+        func freeIndex() -> Int {
+            func randomIndex() -> Int {
+                return Int.random(in: 0...8)
+            }
+
+            var index = randomIndex()
+            
+            while self.squares[index] != 0 {
+                index = randomIndex()
+            }
+            
+            return index
+        }
+        
+        self.squares.swapAt(freeIndex(), self.squares.firstIndex(of: 1)!)
+        self.squares.swapAt(freeIndex(), self.squares.firstIndex(of: 2)!)
+        self.squares.swapAt(freeIndex(), self.squares.firstIndex(of: 3)!)
+        
+        positionSquares(animated: true)
+    }
+    
+    private func positionSquares(animated: Bool) {
+        func positionSquare(view: UIView, index: Int) {
+            let length = self.squareView1.bounds.size.width
+            let centerX = (self.squaresView.bounds.size.width / 2.0)
+            let centerY = (self.squaresView.bounds.size.height / 2.0)
+            let x: CGFloat
+            let y: CGFloat
+            
+            if index == 0 || index == 3 || index == 6 {
+                x = centerX - (length / 2.0) - length
+            } else if index == 1 || index == 4 || index == 7 {
+                x = centerX - (length / 2.0)
+            } else {
+                x = centerX + (length / 2.0)
+            }
+
+            if index == 0 || index == 1 || index == 2 {
+                y = centerY - (length / 2.0) - length
+            } else if index == 3 || index == 4 || index == 5 {
+                y = centerY - (length / 2.0)
+            } else {
+                y = centerY + (length / 2.0)
+            }
+            
+            if animated {
+                UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseOut], animations: {
+                    view.frame.origin = CGPoint(x: x, y: y)
+                }, completion: nil)
+            } else {
+                view.frame.origin = CGPoint(x: x, y: y)
+            }
+        }
+        
+        positionSquare(view: self.squareView1, index: self.squares.firstIndex(of: 1)!)
+        positionSquare(view: self.squareView2, index: self.squares.firstIndex(of: 2)!)
+        positionSquare(view: self.squareView3, index: self.squares.firstIndex(of: 3)!)
+    }
+    
     private class Event: NSObject {
         let p1: Bool
         let p2: Bool
