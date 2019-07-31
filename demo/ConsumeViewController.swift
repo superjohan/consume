@@ -356,11 +356,11 @@ class ConsumeViewController: UIViewController {
             let view = UIView(frame: CGRect(x: x, y: bgElementHeight * CGFloat(index), width: bgElementWidth, height: bgElementHeight))
             
             if index == 0 {
-                view.backgroundColor = UIColor(white: 0.5, alpha: 1)
+                view.backgroundColor = UIColor(white: 0.4, alpha: 1)
             } else if index == 1 {
-                view.backgroundColor = UIColor(white: 0.6, alpha: 1)
+                view.backgroundColor = UIColor(white: 0.5, alpha: 1)
             } else if index == 2 {
-                view.backgroundColor = UIColor(white: 0.7, alpha: 1)
+                view.backgroundColor = UIColor(white: 0.6, alpha: 1)
             }
             
             view.tag = event.index // yeah, yeah, sue me
