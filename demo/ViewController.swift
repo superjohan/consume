@@ -18,6 +18,8 @@ class ViewController: UIViewController {
     let contentView = UIView()
     let qtFoolingBgView = UIView()
     
+    let backgroundView = UIView()
+    
     let squaresView = UIView()
     let squareView1 = UIView()
     let squareView2 = UIView()
@@ -69,6 +71,7 @@ class ViewController: UIViewController {
         
         self.view.addSubview(self.contentView)
         
+        self.contentView.addSubview(self.backgroundView)
         self.contentView.addSubview(self.squaresView)
         
         if !self.autostart {
@@ -102,6 +105,7 @@ class ViewController: UIViewController {
 
         self.contentView.frame = self.view.bounds
         self.squaresView.frame = self.view.bounds
+        self.backgroundView.frame = self.view.bounds
         
         let length = (self.view.bounds.size.width / 3.0) - 50
         
@@ -163,7 +167,8 @@ class ViewController: UIViewController {
         var pattern3position = 0
 
         var events = [Event]()
-
+        var index = 0
+        
         for bar in 0..<endBar {
             let barPosition = Double(bar) * barLength
             
@@ -222,9 +227,12 @@ class ViewController: UIViewController {
                 }
                 
                 let event = Event(p1, p2, p3, bar, tick, tickPosition)
-                
+
                 if event.hasAction {
+                    event.index = index
                     events.append(event)
+                    
+                    index += 1
                 }
                 
 //                if tick == 8 {
@@ -282,6 +290,57 @@ class ViewController: UIViewController {
         if event.p3 {
             animate(self.squareView3)
         }
+        
+        updateBackground(event: event)
+    }
+    
+    private func updateBackground(event: Event) {
+        guard let events = self.events else { abort() }
+        
+        let bgElementWidth = self.view.bounds.size.width / CGFloat(event.index + 1)
+        let bgElementHeight = self.view.bounds.size.height / CGFloat(3)
+        
+        UIView.animate(withDuration: 0.1, animations: {
+            for view in self.backgroundView.subviews {
+                let viewIndex = view.tag
+                view.frame = CGRect(
+                    x: CGFloat(viewIndex) * bgElementWidth,
+                    y: view.frame.origin.y,
+                    width: bgElementWidth,
+                    height: view.bounds.size.height
+                )
+            }
+        })
+        
+        let x = CGFloat(event.index) * bgElementWidth
+        
+        func addView(index: Int) {
+            let view = UIView(frame: CGRect(x: x, y: bgElementHeight * CGFloat(index), width: bgElementWidth, height: bgElementHeight))
+            
+            if index == 0 {
+                view.backgroundColor = UIColor(white: 0.5, alpha: 1)
+            } else if index == 1 {
+                view.backgroundColor = UIColor(white: 0.6, alpha: 1)
+            } else if index == 2 {
+                view.backgroundColor = UIColor(white: 0.7, alpha: 1)
+            }
+            
+            view.tag = event.index // yeah, yeah, sue me
+            
+            self.backgroundView.addSubview(view)
+        }
+        
+        if event.p1 {
+            addView(index: 0)
+        }
+        
+        if event.p2 {
+            addView(index: 1)
+        }
+        
+        if event.p3 {
+            addView(index: 2)
+        }
     }
     
     @objc private func clapEvent() {
@@ -294,6 +353,7 @@ class ViewController: UIViewController {
         let bar: Int
         let tick: Int
         let timestamp: TimeInterval
+        var index: Int = 0
         
         var hasAction: Bool {
             get {
