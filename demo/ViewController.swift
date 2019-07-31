@@ -189,41 +189,49 @@ class ViewController: UIViewController {
 
             for tick in 0...15 {
                 let tickPosition = barPosition + (Double(tick) * tickLength)
+                let p1: Bool
+                let p2: Bool
+                let p3: Bool
                 
                 if !pattern1off.contains(bar) {
-                    if pattern1[pattern1position] == 1 {
-                        perform(#selector(pattern1event), with: nil, afterDelay: tickPosition)
-                    }
-
+                    p1 = pattern1[pattern1position] == 1
+                    
                     pattern1position += 1
                     
                     if pattern1position >= pattern1.count {
                         pattern1position = 0
                     }
+                } else {
+                    p1 = false
                 }
 
                 if !pattern2off.contains(bar) {
-                    if pattern2[pattern2position] == 1 {
-                        perform(#selector(pattern2event), with: nil, afterDelay: tickPosition)
-                    }
-                    
+                    p2 = pattern2[pattern2position] == 1
+
                     pattern2position += 1
                     
                     if pattern2position >= pattern2.count {
                         pattern2position = 0
                     }
+                } else {
+                    p2 = false
                 }
 
                 if !pattern3off.contains(bar) {
-                    if pattern3[pattern3position] == 1 {
-                        perform(#selector(pattern3event), with: nil, afterDelay: tickPosition)
-                    }
-                    
+                    p3 = pattern3[pattern3position] == 1
+
                     pattern3position += 1
                     
                     if pattern3position >= pattern3.count {
                         pattern3position = 0
                     }
+                } else {
+                    p3 = false
+                }
+                
+                let event = Event(p1, p2, p3)
+                if event.hasAction {
+                    perform(#selector(eventTrigger(_:)), with: event, afterDelay: tickPosition)
                 }
                 
                 if tick == 8 {
@@ -233,30 +241,48 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc private func pattern1event() {
-        self.testView1.alpha = 1
+    @objc private func eventTrigger(_ event: Event) {
+        func animate(_ view: UIView) {
+            view.alpha = 1
+            
+            UIView.animate(withDuration: 0.2, animations: {
+                view.alpha = 0
+            })
+        }
         
-        UIView.animate(withDuration: 0.2, animations: {
-            self.testView1.alpha = 0
-        })
-    }
-    
-    @objc private func pattern2event() {
-        self.testView2.alpha = 1
-        
-        UIView.animate(withDuration: 0.2, animations: {
-            self.testView2.alpha = 0
-        })
-    }
-    
-    @objc private func pattern3event() {
-        self.testView3.alpha = 1
-        
-        UIView.animate(withDuration: 0.2, animations: {
-            self.testView3.alpha = 0
-        })
+        if event.p1 {
+            animate(self.testView1)
+        }
+
+        if event.p2 {
+            animate(self.testView2)
+        }
+
+        if event.p3 {
+            animate(self.testView3)
+        }
     }
     
     @objc private func clapEvent() {
+    }
+    
+    private class Event: NSObject {
+        let p1: Bool
+        let p2: Bool
+        let p3: Bool
+        
+        var hasAction: Bool {
+            get {
+                return p1 || p2 || p3
+            }
+        }
+        
+        init(_ p1: Bool, _ p2: Bool, _ p3: Bool) {
+            self.p1 = p1
+            self.p2 = p2
+            self.p3 = p3
+            
+            super.init()
+        }
     }
 }
