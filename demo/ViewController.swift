@@ -229,7 +229,7 @@ class ViewController: UIViewController {
                     p3 = false
                 }
                 
-                let event = Event(p1, p2, p3)
+                let event = Event(p1, p2, p3, bar, tick)
                 if event.hasAction {
                     perform(#selector(eventTrigger(_:)), with: event, afterDelay: tickPosition)
                 }
@@ -270,6 +270,8 @@ class ViewController: UIViewController {
         let p1: Bool
         let p2: Bool
         let p3: Bool
+        let bar: Int
+        let tick: Int
         
         var hasAction: Bool {
             get {
@@ -277,10 +279,12 @@ class ViewController: UIViewController {
             }
         }
         
-        init(_ p1: Bool, _ p2: Bool, _ p3: Bool) {
+        init(_ p1: Bool, _ p2: Bool, _ p3: Bool, _ bar: Int, _ tick: Int) {
             self.p1 = p1
             self.p2 = p2
             self.p3 = p3
+            self.bar = bar
+            self.tick = tick
             
             super.init()
         }
