@@ -18,6 +18,11 @@ class ViewController: UIViewController {
     let contentView = UIView()
     let qtFoolingBgView = UIView()
     
+    let squaresView = UIView()
+    let squareView1 = UIView()
+    let squareView2 = UIView()
+    let squareView3 = UIView()
+
     // MARK: - UIViewController
     
     init() {
@@ -60,6 +65,8 @@ class ViewController: UIViewController {
         
         self.view.addSubview(self.contentView)
         
+        self.contentView.addSubview(self.squaresView)
+        
         if !self.autostart {
             self.view.addSubview(self.startButton)
         }
@@ -78,10 +85,6 @@ class ViewController: UIViewController {
 
         self.audioPlayer.prepareToPlay()
     }
-
-    let testView1 = UIView()
-    let testView2 = UIView()
-    let testView3 = UIView()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -94,23 +97,24 @@ class ViewController: UIViewController {
         )
 
         self.contentView.frame = self.view.bounds
-
+        self.squaresView.frame = self.view.bounds
+        
         let length = (self.view.bounds.size.width / 3.0) - 50
         
-        self.testView2.frame = CGRect(x: (self.view.bounds.size.width / 2.0) - (length / 2.0), y: (self.view.bounds.size.height / 2.0) - (length / 2.0), width: length, height: length)
-        self.testView2.backgroundColor = .black
-        self.testView2.alpha = 0
-        self.contentView.addSubview(self.testView2)
+        self.squareView2.frame = CGRect(x: (self.view.bounds.size.width / 2.0) - (length / 2.0), y: (self.view.bounds.size.height / 2.0) - (length / 2.0), width: length, height: length)
+        self.squareView2.backgroundColor = .black
+        self.squareView2.alpha = 0
+        self.squaresView.addSubview(self.squareView2)
 
-        self.testView1.frame = CGRect(x: self.testView2.frame.origin.x - length, y: self.testView2.frame.origin.y, width: length, height: length)
-        self.testView1.backgroundColor = .black
-        self.testView1.alpha = 0
-        self.contentView.addSubview(self.testView1)
+        self.squareView1.frame = CGRect(x: self.squareView2.frame.origin.x - length, y: self.squareView2.frame.origin.y, width: length, height: length)
+        self.squareView1.backgroundColor = .black
+        self.squareView1.alpha = 0
+        self.squaresView.addSubview(self.squareView1)
         
-        self.testView3.frame = CGRect(x: self.testView2.frame.origin.x + length, y: self.testView2.frame.origin.y, width: length, height: length)
-        self.testView3.backgroundColor = .black
-        self.testView3.alpha = 0
-        self.contentView.addSubview(self.testView3)
+        self.squareView3.frame = CGRect(x: self.squareView2.frame.origin.x + length, y: self.squareView2.frame.origin.y, width: length, height: length)
+        self.squareView3.backgroundColor = .black
+        self.squareView3.alpha = 0
+        self.squaresView.addSubview(self.squareView3)
 
         self.startButton.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
     }
@@ -251,15 +255,15 @@ class ViewController: UIViewController {
         }
         
         if event.p1 {
-            animate(self.testView1)
+            animate(self.squareView1)
         }
 
         if event.p2 {
-            animate(self.testView2)
+            animate(self.squareView2)
         }
 
         if event.p3 {
-            animate(self.testView3)
+            animate(self.squareView3)
         }
     }
     
