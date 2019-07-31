@@ -50,12 +50,12 @@ class ConsumeViewController: UIViewController {
         }
         
         let startButtonText =
-            "\"some demo\"\n" +
+            "\"it's more fun to consume\"\n" +
                 "by dekadence\n" +
                 "\n" +
                 "programming and music by ricky martin\n" +
                 "\n" +
-                "presented at some party 2018\n" +
+                "presented at assembly summer 2019\n" +
                 "\n" +
         "tap anywhere to start"
         self.startButton.setTitle(startButtonText, for: UIControl.State.normal)
