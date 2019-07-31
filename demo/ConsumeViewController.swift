@@ -15,7 +15,7 @@ let barLength = (120.0 / bpm) * 2.0
 let tickLength = barLength / 16.0
 let endBar = 81
 
-class ViewController: UIViewController {
+class ConsumeViewController: UIViewController {
     let autostart = true
     
     let audioPlayer: AVAudioPlayer
