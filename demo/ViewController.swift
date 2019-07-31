@@ -23,6 +23,8 @@ class ViewController: UIViewController {
     let squareView2 = UIView()
     let squareView3 = UIView()
 
+    private var events: [Event]?
+    
     // MARK: - UIViewController
     
     init() {
@@ -52,6 +54,8 @@ class ViewController: UIViewController {
         
         super.init(nibName: nil, bundle: nil)
         
+        self.events = createEvents()
+
         self.startButton.addTarget(self, action: #selector(startButtonTouched), for: UIControl.Event.touchUpInside)
         
         self.view.backgroundColor = .black
@@ -135,6 +139,103 @@ class ViewController: UIViewController {
     
     // MARK: - Private
     
+    private func createEvents() -> [Event] {
+        let bpm = 140.0
+        let barLength = (120.0 / bpm) * 2.0
+        let tickLength = barLength / 16.0
+        
+        let pattern1 = [1, 0, 0, 0, 0]
+        let pattern1resets = [8, 28, 29, 45, 52, 58, 62, 69, 80]
+        let pattern1off = [41, 42, 43, 44, 78, 79]
+        
+        let pattern2 = [0, 1, 0, 0, 1]
+        let pattern2resets = [16, 20, 35, 45, 55, 56, 60, 65, 66, 80]
+        let pattern2off = [33, 34, 73, 74, 75, 76, 77, 78, 79]
+        
+        let pattern3 = [0, 0, 1, 1, 0]
+        let pattern3resets = [12, 24, 37, 45, 53, 59, 64, 74, 80]
+        let pattern3off = [44, 70, 71, 72, 73]
+        
+        let endBar = 81
+        
+        var pattern1position = 0
+        var pattern2position = 0
+        var pattern3position = 0
+
+        var events = [Event]()
+
+        for bar in 0..<endBar {
+            let barPosition = Double(bar) * barLength
+            
+            if pattern1resets.contains(bar) {
+                pattern1position = 0
+            }
+            
+            if pattern2resets.contains(bar) {
+                pattern2position = 0
+            }
+            
+            if pattern3resets.contains(bar) {
+                pattern3position = 0
+            }
+            
+            for tick in 0...15 {
+                let tickPosition = barPosition + (Double(tick) * tickLength)
+                let p1: Bool
+                let p2: Bool
+                let p3: Bool
+                
+                if !pattern1off.contains(bar) {
+                    p1 = pattern1[pattern1position] == 1
+                    
+                    pattern1position += 1
+                    
+                    if pattern1position >= pattern1.count {
+                        pattern1position = 0
+                    }
+                } else {
+                    p1 = false
+                }
+                
+                if !pattern2off.contains(bar) {
+                    p2 = pattern2[pattern2position] == 1
+                    
+                    pattern2position += 1
+                    
+                    if pattern2position >= pattern2.count {
+                        pattern2position = 0
+                    }
+                } else {
+                    p2 = false
+                }
+                
+                if !pattern3off.contains(bar) {
+                    p3 = pattern3[pattern3position] == 1
+                    
+                    pattern3position += 1
+                    
+                    if pattern3position >= pattern3.count {
+                        pattern3position = 0
+                    }
+                } else {
+                    p3 = false
+                }
+                
+                let event = Event(p1, p2, p3, bar, tick, tickPosition)
+                
+                if event.hasAction {
+                    events.append(event)
+                }
+                
+//                if tick == 8 {
+//                    perform(#selector(clapEvent), with: nil, afterDelay: tickPosition)
+//                }
+            }
+        }
+        
+        return events
+    }
+    
     @objc
     fileprivate func startButtonTouched(button: UIButton) {
         self.startButton.isUserInteractionEnabled = false
@@ -154,94 +255,10 @@ class ViewController: UIViewController {
     }
     
     private func scheduleEvents() {
-        let bpm = 140.0
-        let barLength = (120.0 / bpm) * 2.0
-        let tickLength = barLength / 16.0
+        guard let events = self.events else { abort() }
         
-        let pattern1 = [1, 0, 0, 0, 0]
-        let pattern1resets = [8, 28, 29, 45, 52, 58, 62, 69, 80]
-        let pattern1off = [41, 42, 43, 44, 78, 79]
-        
-        let pattern2 = [0, 1, 0, 0, 1]
-        let pattern2resets = [16, 20, 35, 45, 55, 56, 60, 65, 66, 80]
-        let pattern2off = [33, 34, 73, 74, 75, 76, 77, 78, 79]
-        
-        let pattern3 = [0, 0, 1, 1, 0]
-        let pattern3resets = [12, 24, 37, 45, 53, 59, 64, 74, 80]
-        let pattern3off = [44, 70, 71, 72, 73]
-
-        let endBar = 81
-
-        var pattern1position = 0
-        var pattern2position = 0
-        var pattern3position = 0
-        
-        for bar in 0..<endBar {
-            let barPosition = Double(bar) * barLength
-
-            if pattern1resets.contains(bar) {
-                pattern1position = 0
-            }
-
-            if pattern2resets.contains(bar) {
-                pattern2position = 0
-            }
-
-            if pattern3resets.contains(bar) {
-                pattern3position = 0
-            }
-
-            for tick in 0...15 {
-                let tickPosition = barPosition + (Double(tick) * tickLength)
-                let p1: Bool
-                let p2: Bool
-                let p3: Bool
-                
-                if !pattern1off.contains(bar) {
-                    p1 = pattern1[pattern1position] == 1
-                    
-                    pattern1position += 1
-                    
-                    if pattern1position >= pattern1.count {
-                        pattern1position = 0
-                    }
-                } else {
-                    p1 = false
-                }
-
-                if !pattern2off.contains(bar) {
-                    p2 = pattern2[pattern2position] == 1
-
-                    pattern2position += 1
-                    
-                    if pattern2position >= pattern2.count {
-                        pattern2position = 0
-                    }
-                } else {
-                    p2 = false
-                }
-
-                if !pattern3off.contains(bar) {
-                    p3 = pattern3[pattern3position] == 1
-
-                    pattern3position += 1
-                    
-                    if pattern3position >= pattern3.count {
-                        pattern3position = 0
-                    }
-                } else {
-                    p3 = false
-                }
-                
-                let event = Event(p1, p2, p3, bar, tick)
-                if event.hasAction {
-                    perform(#selector(eventTrigger(_:)), with: event, afterDelay: tickPosition)
-                }
-                
-                if tick == 8 {
-                    perform(#selector(clapEvent), with: nil, afterDelay: tickPosition)
-                }
-            }
+        for event in events {
+            perform(#selector(eventTrigger(_:)), with: event, afterDelay: event.timestamp)
         }
     }
     
@@ -276,6 +293,7 @@ class ViewController: UIViewController {
         let p3: Bool
         let bar: Int
         let tick: Int
+        let timestamp: TimeInterval
         
         var hasAction: Bool {
             get {
@@ -283,12 +301,13 @@ class ViewController: UIViewController {
             }
         }
         
-        init(_ p1: Bool, _ p2: Bool, _ p3: Bool, _ bar: Int, _ tick: Int) {
+        init(_ p1: Bool, _ p2: Bool, _ p3: Bool, _ bar: Int, _ tick: Int, _ timestamp: TimeInterval) {
             self.p1 = p1
             self.p2 = p2
             self.p3 = p3
             self.bar = bar
             self.tick = tick
+            self.timestamp = timestamp
             
             super.init()
         }
