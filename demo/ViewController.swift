@@ -10,6 +10,11 @@ import UIKit
 import AVFoundation
 import Foundation
 
+let bpm = 140.0
+let barLength = (120.0 / bpm) * 2.0
+let tickLength = barLength / 16.0
+let endBar = 81
+
 class ViewController: UIViewController {
     let autostart = true
     
@@ -145,10 +150,6 @@ class ViewController: UIViewController {
     // MARK: - Private
     
     private func createEvents() -> [Event] {
-        let bpm = 140.0
-        let barLength = (120.0 / bpm) * 2.0
-        let tickLength = barLength / 16.0
-        
         let pattern1 = [1, 0, 0, 0, 0]
         let pattern1resets = [8, 28, 29, 45, 52, 58, 62, 69, 80]
         let pattern1off = [41, 42, 43, 44, 78, 79]
@@ -160,8 +161,6 @@ class ViewController: UIViewController {
         let pattern3 = [0, 0, 1, 1, 0]
         let pattern3resets = [12, 24, 37, 45, 53, 59, 64, 74, 80]
         let pattern3off = [44, 70, 71, 72, 73]
-        
-        let endBar = 81
         
         var pattern1position = 0
         var pattern2position = 0
