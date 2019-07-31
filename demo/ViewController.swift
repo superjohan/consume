@@ -376,11 +376,27 @@ class ViewController: UIViewController {
         if self.didReset {
             self.position += 1
             self.didReset = false
+
+            rotateBackgroundViews()
         }
         
         rotateSquaresView()
     }
     
+    private func rotateBackgroundViews() {
+        let views = self.backgroundView.subviews.reversed()
+        let count = Double(views.count)
+        let maxDuration = 0.5
+        
+        for (index, view) in views.enumerated() {
+            view.transform = CGAffineTransform.identity
+            
+            UIView.animate(withDuration: 0.5, delay: (Double(index) / count) * maxDuration, options: [.curveEaseOut], animations:  {
+                view.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+            }, completion: nil)
+        }
+    }
+
     private func rotateSquaresView() {
         self.squaresView.layer.removeAllAnimations()
         self.squaresView.layer.transform = CATransform3DIdentity
