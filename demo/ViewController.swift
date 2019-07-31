@@ -113,7 +113,7 @@ class ViewController: UIViewController {
         self.squaresView.frame = self.view.bounds
         self.backgroundView.frame = self.view.bounds
         
-        let length = (self.view.bounds.size.width / 3.0) - 50
+        let length = self.view.bounds.size.height / 2.0
         
         self.squareView2.frame = CGRect(x: (self.view.bounds.size.width / 2.0) - (length / 2.0), y: (self.view.bounds.size.height / 2.0) - (length / 2.0), width: length, height: length)
         self.squareView2.backgroundColor = .black
