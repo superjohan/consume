@@ -191,12 +191,13 @@ class ViewController: UIViewController {
                 hasReset = true
             }
             
+            var firstTickReset = false
+            
             for tick in 0...15 {
                 let tickPosition = barPosition + (Double(tick) * tickLength)
                 let p1: Bool
                 let p2: Bool
                 let p3: Bool
-                let reset = hasReset && tick == 0
                 
                 if !pattern1off.contains(bar) {
                     p1 = pattern1[pattern1position] == 1
@@ -234,10 +235,16 @@ class ViewController: UIViewController {
                     p3 = false
                 }
                 
-                let event = Event(p1, p2, p3, bar, tick, tickPosition, reset)
+                let event = Event(p1, p2, p3, bar, tick, tickPosition)
 
                 if event.hasAction {
                     event.index = index
+                    
+                    if hasReset && !firstTickReset {
+                        event.reset = true
+                        firstTickReset = true
+                    }
+
                     events.append(event)
                     
                     index += 1
@@ -407,23 +414,22 @@ class ViewController: UIViewController {
         let bar: Int
         let tick: Int
         let timestamp: TimeInterval
-        let reset: Bool
         var index: Int = 0
-        
+        var reset: Bool = false
+
         var hasAction: Bool {
             get {
                 return p1 || p2 || p3
             }
         }
         
-        init(_ p1: Bool, _ p2: Bool, _ p3: Bool, _ bar: Int, _ tick: Int, _ timestamp: TimeInterval, _ reset: Bool) {
+        init(_ p1: Bool, _ p2: Bool, _ p3: Bool, _ bar: Int, _ tick: Int, _ timestamp: TimeInterval) {
             self.p1 = p1
             self.p2 = p2
             self.p3 = p3
             self.bar = bar
             self.tick = tick
             self.timestamp = timestamp
-            self.reset = reset
             
             super.init()
         }
