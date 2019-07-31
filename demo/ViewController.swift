@@ -234,10 +234,6 @@ class ViewController: UIViewController {
                     
                     index += 1
                 }
-                
-//                if tick == 8 {
-//                    perform(#selector(clapEvent), with: nil, afterDelay: tickPosition)
-//                }
             }
         }
         
