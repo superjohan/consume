@@ -34,6 +34,7 @@ class ViewController: UIViewController {
     
     var position = 0
     var didReset = false
+    var rotateBackground = Bool.random()
     
     // MARK: - UIViewController
     
@@ -377,11 +378,13 @@ class ViewController: UIViewController {
             self.position += 1
             self.didReset = false
 
-            if Bool.random() {
+            if self.rotateBackground {
                 rotateBackgroundViews()
             } else {
                 scaleBackgroundViews()
             }
+            
+            self.rotateBackground = !self.rotateBackground
         }
         
         rotateSquaresView()
