@@ -32,6 +32,9 @@ class ViewController: UIViewController {
 
     private var events: [Event]?
     
+    var position = 0
+    var didReset = false
+    
     // MARK: - UIViewController
     
     init() {
@@ -306,6 +309,10 @@ class ViewController: UIViewController {
             animate(self.squareView3)
         }
         
+        if event.reset {
+            self.didReset = true
+        }
+        
         updateBackground(event: event)
     }
     
@@ -359,16 +366,21 @@ class ViewController: UIViewController {
     }
     
     @objc private func clapEvent() {
-        rotateSquaresView()
+        if self.didReset {
+            self.position += 1
+            self.didReset = false
+        }
+        
+        rotateSquaresView(position: self.position)
     }
     
-    private func rotateSquaresView() {
+    private func rotateSquaresView(position: Int) {
         self.squaresView.layer.removeAllAnimations()
         self.squaresView.layer.transform = CATransform3DIdentity
         self.squaresView.layer.transform.m34 = -0.002
         
-        let angleX = Double.random(in: 0.2...1.0) * (Bool.random() ? -1 : 1)
-        let angleY = Double.random(in: 0.2...1.0) * (Bool.random() ? -1 : 1)
+        let angleX = Double.random(in: 0...Double(position) / 10.0) * (Bool.random() ? -1 : 1)
+        let angleY = Double.random(in: 0...Double(position) / 10.0) * (Bool.random() ? -1 : 1)
         let timingFunction = CAMediaTimingFunction(name: .easeOut)
         
         let animationX = CABasicAnimation(keyPath: "transform.rotation.x")
