@@ -377,7 +377,11 @@ class ViewController: UIViewController {
             self.position += 1
             self.didReset = false
 
-            rotateBackgroundViews()
+            if Bool.random() {
+                rotateBackgroundViews()
+            } else {
+                scaleBackgroundViews()
+            }
         }
         
         rotateSquaresView()
@@ -393,6 +397,20 @@ class ViewController: UIViewController {
             
             UIView.animate(withDuration: 0.5, delay: (Double(index) / count) * maxDuration, options: [.curveEaseOut], animations:  {
                 view.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+            }, completion: nil)
+        }
+    }
+
+    private func scaleBackgroundViews() {
+        let views = self.backgroundView.subviews.reversed()
+        let count = Double(views.count)
+        let maxDuration = 0.5
+        
+        for (index, view) in views.enumerated() {
+            view.transform = CGAffineTransform.identity.scaledBy(x: 1.0, y: 3.0)
+            
+            UIView.animate(withDuration: 0.5, delay: (Double(index) / count) * maxDuration, options: [.curveEaseOut], animations:  {
+                view.transform = CGAffineTransform.identity
             }, completion: nil)
         }
     }
