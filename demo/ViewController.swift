@@ -266,6 +266,18 @@ class ViewController: UIViewController {
         for event in events {
             perform(#selector(eventTrigger(_:)), with: event, afterDelay: event.timestamp)
         }
+        
+        for bar in 0..<endBar {
+            let barPosition = Double(bar) * barLength
+
+            for tick in 0...15 {
+                let tickPosition = barPosition + (Double(tick) * tickLength)
+
+                if tick == 8 {
+                    perform(#selector(clapEvent), with: nil, afterDelay: tickPosition)
+                }
+            }
+        }
     }
     
     @objc private func eventTrigger(_ event: Event) {
