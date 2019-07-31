@@ -171,17 +171,21 @@ class ViewController: UIViewController {
         
         for bar in 0..<endBar {
             let barPosition = Double(bar) * barLength
+            var hasReset = false
             
             if pattern1resets.contains(bar) {
                 pattern1position = 0
+                hasReset = true
             }
             
             if pattern2resets.contains(bar) {
                 pattern2position = 0
+                hasReset = true
             }
             
             if pattern3resets.contains(bar) {
                 pattern3position = 0
+                hasReset = true
             }
             
             for tick in 0...15 {
@@ -189,6 +193,7 @@ class ViewController: UIViewController {
                 let p1: Bool
                 let p2: Bool
                 let p3: Bool
+                let reset = hasReset && tick == 0
                 
                 if !pattern1off.contains(bar) {
                     p1 = pattern1[pattern1position] == 1
@@ -226,7 +231,7 @@ class ViewController: UIViewController {
                     p3 = false
                 }
                 
-                let event = Event(p1, p2, p3, bar, tick, tickPosition)
+                let event = Event(p1, p2, p3, bar, tick, tickPosition, reset)
 
                 if event.hasAction {
                     event.index = index
@@ -390,6 +395,7 @@ class ViewController: UIViewController {
         let bar: Int
         let tick: Int
         let timestamp: TimeInterval
+        let reset: Bool
         var index: Int = 0
         
         var hasAction: Bool {
@@ -398,13 +404,14 @@ class ViewController: UIViewController {
             }
         }
         
-        init(_ p1: Bool, _ p2: Bool, _ p3: Bool, _ bar: Int, _ tick: Int, _ timestamp: TimeInterval) {
+        init(_ p1: Bool, _ p2: Bool, _ p3: Bool, _ bar: Int, _ tick: Int, _ timestamp: TimeInterval, _ reset: Bool) {
             self.p1 = p1
             self.p2 = p2
             self.p3 = p3
             self.bar = bar
             self.tick = tick
             self.timestamp = timestamp
+            self.reset = reset
             
             super.init()
         }
