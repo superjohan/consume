@@ -354,8 +354,35 @@ class ViewController: UIViewController {
     }
     
     @objc private func clapEvent() {
+        rotateSquaresView()
     }
     
+    private func rotateSquaresView() {
+        self.squaresView.layer.removeAllAnimations()
+        self.squaresView.layer.transform = CATransform3DIdentity
+        self.squaresView.layer.transform.m34 = -0.002
+        
+        let angleX = Double.random(in: 0.2...1.0) * (Bool.random() ? -1 : 1)
+        let angleY = Double.random(in: 0.2...1.0) * (Bool.random() ? -1 : 1)
+        let timingFunction = CAMediaTimingFunction(name: .easeOut)
+        
+        let animationX = CABasicAnimation(keyPath: "transform.rotation.x")
+        animationX.toValue = NSNumber(floatLiteral: angleX)
+        animationX.duration = 0.5
+        animationX.timingFunction = timingFunction
+        animationX.fillMode = .forwards
+        animationX.isRemovedOnCompletion = false
+        self.squaresView.layer.add(animationX, forKey: "rotationX")
+        
+        let animationY = CABasicAnimation(keyPath: "transform.rotation.y")
+        animationY.toValue = NSNumber(floatLiteral: angleY)
+        animationY.duration = 0.5
+        animationY.timingFunction = timingFunction
+        animationY.fillMode = .forwards
+        animationY.isRemovedOnCompletion = false
+        self.squaresView.layer.add(animationY, forKey: "rotationY")
+    }
+
     private class Event: NSObject {
         let p1: Bool
         let p2: Bool
