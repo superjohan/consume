@@ -59,6 +59,8 @@ class ConsumeViewController: UIViewController {
                 "\n" +
                 "presented at assembly summer 2019\n" +
                 "\n" +
+                "warning: contains lots of blinking and flashing\n" +
+                "\n" +
         "tap anywhere to start"
         self.startButton.setTitle(startButtonText, for: UIControl.State.normal)
         self.startButton.titleLabel?.numberOfLines = 0
