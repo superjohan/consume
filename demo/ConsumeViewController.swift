@@ -298,6 +298,8 @@ class ConsumeViewController: UIViewController {
                 }
             }
         }
+        
+        perform(#selector(end), with: nil, afterDelay: Double(endBar) * barLength)
     }
     
     @objc private func eventTrigger(_ event: Event) {
@@ -525,6 +527,14 @@ class ConsumeViewController: UIViewController {
         positionSquare(view: self.squareView1, index: self.squares.firstIndex(of: 1)!)
         positionSquare(view: self.squareView2, index: self.squares.firstIndex(of: 2)!)
         positionSquare(view: self.squareView3, index: self.squares.firstIndex(of: 3)!)
+    }
+    
+    @objc private func end() {
+        for (index, view) in self.backgroundView.subviews.enumerated() {
+            UIView.animate(withDuration: 2, delay: 2 + (TimeInterval(index) * 0.004), options: [.beginFromCurrentState], animations: {
+                view.alpha = 0
+            }, completion: nil)
+        }
     }
     
     private class Event: NSObject {
