@@ -395,6 +395,7 @@ class ConsumeViewController: UIViewController {
             // squares
             
             randomizeSquarePositions()
+            circleizeRandomSquares()
         }
         
         rotateSquaresView()
@@ -454,6 +455,18 @@ class ConsumeViewController: UIViewController {
         self.squaresView.layer.add(animationY, forKey: "rotationY")
     }
 
+    private func circleizeRandomSquares() {
+        let circle1 = Bool.random()
+        let circle2 = Bool.random()
+        let circle3 = Bool.random()
+        
+        UIView.animate(withDuration: 1, delay: 0, options: [.curveEaseOut], animations: {
+            self.squareView1.layer.cornerRadius = circle1 ? (self.squareView1.layer.cornerRadius > 0.1 ? 0 : self.squareView1.bounds.size.width / 2.0) : self.squareView1.layer.cornerRadius
+            self.squareView2.layer.cornerRadius = circle2 ? (self.squareView2.layer.cornerRadius > 0.1 ? 0 : self.squareView2.bounds.size.width / 2.0) : self.squareView2.layer.cornerRadius
+            self.squareView3.layer.cornerRadius = circle3 ? (self.squareView3.layer.cornerRadius > 0.1 ? 0 : self.squareView3.bounds.size.width / 2.0) : self.squareView3.layer.cornerRadius
+        }, completion: nil)
+    }
+    
     private func randomizeSquarePositions() {
         func freeIndex() -> Int {
             func randomIndex() -> Int {
