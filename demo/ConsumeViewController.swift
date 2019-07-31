@@ -16,7 +16,7 @@ let tickLength = barLength / 16.0
 let endBar = 81
 
 class ConsumeViewController: UIViewController {
-    let autostart = true
+    let autostart = false
     
     let audioPlayer: AVAudioPlayer
     let startButton = UIButton(type: UIButton.ButtonType.custom)
