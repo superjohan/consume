@@ -68,6 +68,7 @@ class ViewController: UIViewController {
         self.view.addSubview(self.qtFoolingBgView)
         
         self.contentView.backgroundColor = .white
+        self.contentView.isHidden = true
         
         self.view.addSubview(self.contentView)
         
@@ -258,6 +259,8 @@ class ViewController: UIViewController {
     
     fileprivate func start() {
         self.audioPlayer.play()
+        
+        self.contentView.isHidden = false
         
         scheduleEvents()
     }
