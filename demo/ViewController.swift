@@ -371,16 +371,16 @@ class ViewController: UIViewController {
             self.didReset = false
         }
         
-        rotateSquaresView(position: self.position)
+        rotateSquaresView()
     }
     
-    private func rotateSquaresView(position: Int) {
+    private func rotateSquaresView() {
         self.squaresView.layer.removeAllAnimations()
         self.squaresView.layer.transform = CATransform3DIdentity
         self.squaresView.layer.transform.m34 = -0.002
         
-        let angleX = Double.random(in: 0...Double(position) / 10.0) * (Bool.random() ? -1 : 1)
-        let angleY = Double.random(in: 0...Double(position) / 10.0) * (Bool.random() ? -1 : 1)
+        let angleX = Double.random(in: 0.2...1.0) * (Bool.random() ? -1 : 1)
+        let angleY = Double.random(in: 0.2...1.0) * (Bool.random() ? -1 : 1)
         let timingFunction = CAMediaTimingFunction(name: .easeOut)
         
         let animationX = CABasicAnimation(keyPath: "transform.rotation.x")
